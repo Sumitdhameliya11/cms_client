@@ -4,6 +4,9 @@ import Header from './component/Header';
 import Home from './pages/Home';
 import ErrorPage from "./pages/ErrorPage";
 import Footer from "./component/Footer";
+import Registration from "./component/Registration";
+import Login from "./component/Login";
+import Dashboard from "./component/Dashboard";
 const AppContent = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -12,6 +15,9 @@ const AppContent = () => {
       {isHomePage && <Header />}
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/register' element={<Registration />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
       {isHomePage && <Footer/>}

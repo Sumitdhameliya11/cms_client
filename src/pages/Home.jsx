@@ -18,7 +18,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 // Import required modules
 import { EffectCreative, Autoplay } from "swiper/modules";
-import { BlurLinear } from "@mui/icons-material";
 const Home = () => {
   const backgroundImages = [`url(${i1})`, `url(${i2})`];
 

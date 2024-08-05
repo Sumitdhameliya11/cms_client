@@ -10,13 +10,13 @@ import {
   Col,
 } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-const Registration = () => {
-  const [name,setname]=useState();
-  const [email, setemail] = useState();
-  const [password, setpassword] = useState();
-  const [errorMessage, setErrorMessage] = useState("");
-  const handlesubmit =(e)=>{
-  }
+const Login = () => {
+    const [email, setemail] = useState();
+    const [password, setpassword] = useState();
+    const [errorMessage, setErrorMessage] = useState("");
+      const handlesubmit =(e)=>{
+
+      }
   return (
     <Container
       className="login d-flex justify-content-center align-items-center min-vh-100"
@@ -28,25 +28,11 @@ const Registration = () => {
           <div className=" p-4 rounded shadow-lg" id="div">
             <div className="text-center mb-4">
               <h2 style={{ color: "black" }} className="fw-bold">
-                Registration
+                Login
               </h2>
-              <p className="fw-bold">Welcome Please Sign up For Add Complaint.</p>
+              <p className="fw-bold">Welcome Back! Please Sign In to Add Complaint.</p>
             </div>
             <Form method="post" onSubmit={handlesubmit}>
-            <FormGroup>
-                <Label for="email" style={{ color: "black",fontWeight:"600"}} >
-                  Name :
-                </Label>
-                <Input
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Enter The Name"
-                  value={name}
-                  onChange={(e) => setname(e.target.value)}
-                  required
-                />
-              </FormGroup>
               <FormGroup>
                 <Label for="email" style={{ color: "black",fontWeight:"600"}}>
                   Email :
@@ -78,9 +64,30 @@ const Registration = () => {
                   <div style={{ color: "red" }}>{errorMessage}</div>
                 )}
               </FormGroup>
+              <FormGroup className="text-right">
+                <a
+                  href="/forget-password"
+                  className="text-decoration-none fw-bold"
+                  style={{ color: "black" }}
+                >
+                  Forgot Password?
+                </a>
+              </FormGroup>
               <Button color="primary" block>
-                Sign Up
+                Sign in
               </Button>
+
+              <div className="pt-0 my-2">
+                <Label className="d-inline fw-medium ">
+                Sign up to create a new account&nbsp;
+                  <a
+                    href={`/register`}
+                    className="text-decoration-none text-black fw-bold"
+                  >
+                    Sign up now.
+                  </a>
+                </Label>
+              </div>
             </Form>
           </div>
         </Col>
@@ -89,4 +96,4 @@ const Registration = () => {
   )
 }
 
-export default Registration
+export default Login

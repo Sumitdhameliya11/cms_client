@@ -74,3 +74,45 @@ span{
     transform: translateX(-100%);
   }
 }
+
+/* ============================= login and registration bg image ========================= */
+#container {
+  background-image: url(./image/login.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position:left;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 1px 1px 5px 1px #13131354;
+}
+
+#div{
+  backdrop-filter:blur(15px);
+}
+
+/* ==========================side bar ---------------------- */
+.sidebar {
+  position: absolute !important;
+  height: 100vh !important;
+  background: white !important;
+  width: 250px !important;
+  z-index: 1 !important;
+}
+
+.st-main {
+  padding-left: 250px;
+  max-height: 100vh !important;
+  overflow: auto !important;
+}
+@media (max-width: 768px) {
+  .st-main {
+    padding-left: 0px !important;
+  }
+}
+.active-menu > .ps-menu-button {
+  background-color: #f3f3f3 !important;
+}
+
+#id{
+  text-decoration: none !important;
+}

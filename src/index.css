@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.slide-content {
+  height:90vh; /* Full height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:start;
+  color: white; /* Text color */
+  background-size:cover; /* Adjust the image to cover the container */
+  background-position:auto;/* Center background image */
+  background-repeat: no-repeat;
+  padding: 20px; /* Padding for the content */
+}
+
+span{
+  backdrop-filter:blur(2px);
+}
+
+.title,.subtitle,.text{
+  z-index: 200;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+}
+
+.text {
+  font-size: 1rem;
+  max-width: 600px; /* Max width for the text */
+  text-align:justify; /* Center the text */
+}
+
+/* =======================testimonial ======================= */
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.marquee {
+  display: flex;
+  animation: marquee 15s linear infinite;
+}
+
+.testimonial {
+  flex: 0 0 auto;
+  margin: 0 10px;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

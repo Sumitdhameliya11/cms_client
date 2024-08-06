@@ -55,11 +55,6 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
       title: "Add Compalint",
     },
     {
-      name: "show-complaint",
-      icon: VisibilityIcon,
-      title: "Show Complaint",
-    },
-    {
       name: "reset-password",
       icon: VpnKeyIcon,
       title: "Reset Password",
@@ -92,7 +87,7 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
     {
       name: "staff",
       icon: ApartmentIcon,
-      title: "Staff",
+      title: "Staff Registration",
     },
     {
       name: "add-student",

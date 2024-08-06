@@ -139,7 +139,7 @@ const Home = () => {
         <div className="marquee">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="testimonial w-50">
-              <Card className=" w-100 shadow " style={{backgroundColor:"#ECFFE6",height:"150px"}}>
+              <Card className=" w-100 shadow " style={{backgroundColor:"#D3D3D3",height:"150px"}}>
                 <CardBody>
                   <CardText className="text-black fs-5">"{testimonial.text}"</CardText>
                   <CardFooter className="text-end text-black fs-4">
@@ -151,7 +151,7 @@ const Home = () => {
           ))}
           {testimonials.map((testimonial, index) => (
             <div key={index + testimonials.length} className="testimonial w-50" >
-              <Card className="w-100 shadow" style={{backgroundColor:"#ECFFE6",height:"150px"}}>
+              <Card className="w-100 shadow" style={{backgroundColor:"#D3D3D3",height:"150px"}}>
                 <CardBody>
                   <CardText className="text-black fs-5">"{testimonial.text}"</CardText>
                   <CardFooter className="text-end text-black fs-4">
@@ -179,7 +179,7 @@ const Home = () => {
             <Col md="6" lg="4">
               <div
                 className="mb-4  shadow rounded-1 p-3"
-                style={{ backgroundColor: "#C9DABF", height: "80%" }}
+                style={{ backgroundColor: "#D3D3D3", height: "80%" }}
               >
                 <h6 className="mb-3 text-primary">
                   <FontAwesomeIcon
@@ -201,7 +201,7 @@ const Home = () => {
             <Col md="6" lg="4">
               <div
                 className="mb-4 shadow rounded-1 p-3"
-                style={{ backgroundColor: "#C9DABF", height: "80%" }}
+                style={{ backgroundColor: "#D3D3D3", height: "80%" }}
               >
                 <h6 className="mb-3 text-primary">
                   <FontAwesomeIcon
@@ -223,7 +223,7 @@ const Home = () => {
             <Col md="6" lg="4">
               <div
                 className="mb-4 shadow rounded-1 p-3"
-                style={{ backgroundColor: "#C9DABF", height: "80%" }}
+                style={{ backgroundColor: "#D3D3D3", height: "80%" }}
               >
                 <h6 className="mb-3 text-primary">
                   <FontAwesomeIcon
@@ -242,7 +242,7 @@ const Home = () => {
             <Col md="6" lg="4">
               <div
                 className="mb-4 shadow rounded-1 p-3"
-                style={{ backgroundColor: "#C9DABF", height: "80%" }}
+                style={{ backgroundColor: "#D3D3D3", height: "80%" }}
               >
                 <h6 className="mb-3 text-primary">
                   <FontAwesomeIcon
@@ -261,7 +261,7 @@ const Home = () => {
             <Col md="6" lg="4">
               <div
                 className="mb-4 shadow rounded-1 p-3 "
-                style={{ backgroundColor: "#C9DABF", height: "80%" }}
+                style={{ backgroundColor: "#D3D3D3", height: "80%" }}
               >
                 <h6 className="mb-3 text-primary">
                   <FontAwesomeIcon
@@ -283,7 +283,7 @@ const Home = () => {
             <Col md="6" lg="4">
               <div
                 className="mb-4 shadow rounded-1 p-3"
-                style={{ backgroundColor: "#C9DABF", height: "80%" }}
+                style={{ backgroundColor: "#D3D3D3", height: "80%" }}
               >
                 <h6 className="mb-3 text-primary">
                   <FontAwesomeIcon

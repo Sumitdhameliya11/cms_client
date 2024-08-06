@@ -78,9 +78,9 @@ const Change_password = () => {
     //   });
   };
   return (
-    <Container className="d-flex justify-content-center align-items-center min-vh-100">
+    <Container className="d-flex justify-content-center align-items-center" style={{height:"80vh" }}>
     {/* <Loader showimg={loading}/> */}
-      <Form onSubmit={handlesubmit} className="w-75">
+      <Form onSubmit={handlesubmit} className="w-75 shadow p-3 rounded-3">
         <Row>
           <Col lg={12}>
             <FormGroup className="mb-4">

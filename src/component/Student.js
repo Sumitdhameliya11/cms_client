@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import AddComplaint from "../stud_dashboard_pages/Add_Complaint";
 import Changepassword from "./Change_password";
-import ShowComplaint from "./Show_Complaint";
+import ShowComplaint from "../staff_dashboard/Show_Complaint";
 import Feedback from "../stud_dashboard_pages/Feedback";
 import DashSidebar from "./Sidebar";
 const Student = () => {
   const [activeTab, setActiveTab] = useState();
   const renderPage = () => {
     switch (activeTab) {
-      case "show-complaint":
-        return <ShowComplaint />;
       case "reset-password":
         return <Changepassword />;
       case "feedback":

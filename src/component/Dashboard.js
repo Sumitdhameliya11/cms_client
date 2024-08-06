@@ -3,7 +3,7 @@ import Student from "./Student";
 import Staff from "./Staff";
 import Admin from "./Admin";
 const Dashboard = () => {
-    const [role,setrole]=useState("student");
+    const [role,setrole]=useState("staff");
   return (
     <div>
       {role === "student" && <Student />}

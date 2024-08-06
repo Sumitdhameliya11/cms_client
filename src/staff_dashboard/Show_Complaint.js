@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.css";
 import {
   Modal,
   ModalBody,
@@ -14,8 +13,28 @@ import {
   Container,
   ModalHeader,
 } from "reactstrap";
-import DataSaverOnRoundedIcon from "@mui/icons-material/DataSaverOnRounded";
-const Add_Complaint = () => {
+const handleedit = () => {};
+const handledelete = () => {};
+const Show_Complaint = () => {
+  const [data, setdata] = useState([
+    {
+      id: 1,
+      userId: 101,
+      email: "student1@example.com",
+      mobileNumber: "1234567890",
+      category: "Lab",
+      subcategory: "Lab 1",
+      problem: "Equipment malfunction",
+      createDate: "2024-08-01",
+      resolveDate: null,
+      resolveName: null,
+      status: "Open",
+      computerIp: "192.168.1.2",
+      resolveIp: null,
+      priority: "High",
+    },
+    // ...other initial complaints
+  ]);
   const [modal, setModal] = useState(false);
   const [email, setemail] = useState("");
   const [category, setcategory] = useState();
@@ -24,25 +43,7 @@ const Add_Complaint = () => {
   const [date, setdate] = useState();
   const [sutno, setsutno] = useState();
   const [priority, setpriority] = useState();
-  const [data, setdata] = useState([
-    {
-      id: 1,
-      userId: 101,
-      email: 'student1@example.com',
-      mobileNumber: '1234567890',
-      category: 'Lab',
-      subcategory: 'Lab 1',
-      problem: 'Equipment malfunction',
-      createDate: '2024-08-01',
-      resolveDate: null,
-      resolveName: null,
-      status: 'Open',
-      computerIp: '192.168.1.2',
-      resolveIp: null,
-      priority: 'High',
-    },
-    // ...other initial complaints
-  ]);
+  const handlesubmit = ()=>{}
   const labSubcategories = [
     "Lan Cabel",
     "Moniter",
@@ -52,40 +53,73 @@ const Add_Complaint = () => {
     "Network",
     "Application",
   ];
-
-  //   const [admindata, setadmindata] = useState([]);
-  //   const [loading, setloading] = useState(false);
-  const [searchinput, setsearchinput] = useState("");
-  const handlesubmit = (e) => {};
-  const handleedit = () => {};
-const handledelete = () => {};
   return (
-    <div className="add-complaint">
-      <div className="container border-bottom mb-4">
-        <div className="d-flex justify-content-between align-item-center mt-5">
-          <h3 className="fw-semibold mx-1 mb-1">Add Complaint</h3>
-          <Button
-            typeof="submit"
-            color="success"
-            className="btn d-flex me-4"
-            onClick={() => {
-              setModal(true);
-              //   setloading(true);
-              setTimeout(() => {
-                // setloading(false);
-              }, 500);
-            }}
-          >
-            <DataSaverOnRoundedIcon className="" /> Add
-          </Button>
-        </div>
-        <p>
-          The Complaint Management System enables students to report issues and
-          concerns easily. It ensures prompt handling and resolution of
-          complaints, fostering a supportive learning environment. Stay informed
-          with real-time updates and track the progress of your submissions.
-        </p>
-      </div>
+    <div className="mt-5">
+      <Container>
+        <Table bordered>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User_ID</th>
+              <th>Email</th>
+              <th>Mobile Number</th>
+              <th>Category</th>
+              <th>Subcategory</th>
+              <th>Problem</th>
+              <th>Create Date</th>
+              <th>Resolve Date</th>
+              <th>Resolve Name</th>
+              <th>Status</th>
+              <th>Computer Ip</th>
+              <th>Resolve Ip</th>
+              <th>Priority</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          {data &&
+            data.map((item, idx) => (
+              <tbody key={idx}>
+                <tr>
+                  <td>101</td>
+                  <td>{item.user_id || "N/A"}</td>
+                  <td>{item.email || "N/A"}</td>
+                  <td>{item.Mobile_number || "N/A"}</td>
+                  <td>{item.category || "N/A"}</td>
+                  <td>{item.subcategory || "N/A"}</td>
+                  <td>{item.problem || "N/A"}</td>
+                  <td>{item.create_date || "N/A"}</td>
+                  <td>{item.resolve_date || "N/A"}</td>
+                  <td>{item.resolver_name || "N/A"}</td>
+                  <td>{item.status || "N/A"}</td>
+                  <td>{item.computer_ip || "N/A"}</td>
+                  <td>{item.resolve_ip || "N/A"}</td>
+                  <td>{item.priority || "N/A"}</td>
+                  <td>
+                    <div className="">
+                      <button
+                        className="btn btn-warning me-1"
+                        onClick={() => {
+                          handleedit(item);
+                          setModal(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => {
+                          handledelete(item?.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+        </Table>
+      </Container>
 
       {/* ===================================== Modals ===================================== */}
       <Modal
@@ -266,76 +300,8 @@ const handledelete = () => {};
           </Container>
         </ModalBody>
       </Modal>
-
-      <div className="mt-5">
-      <Container>
-        <Table bordered>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>User_ID</th>
-              <th>Email</th>
-              <th>Mobile Number</th>
-              <th>Category</th>
-              <th>Subcategory</th>
-              <th>Problem</th>
-              <th>Create Date</th>
-              <th>Resolve Date</th>
-              <th>Resolve Name</th>
-              <th>Status</th>
-              <th>Computer Ip</th>
-              <th>Resolve Ip</th>
-              <th>Priority</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          {data &&
-            data.map((item, idx) => (
-              <tbody key={idx}>
-                <tr>
-                  <td>{item.id || "N/A"}</td>
-                  <td>{item.user_id || "N/A"}</td>
-                  <td>{item.email || "N/A"}</td>
-                  <td>{item.Mobile_number || "N/A"}</td>
-                  <td>{item.category || "N/A"}</td>
-                  <td>{item.subcategory || "N/A"}</td>
-                  <td>{item.problem || "N/A"}</td>
-                  <td>{item.create_date || "N/A"}</td>
-                  <td>{item.resolve_date || "N/A"}</td>
-                  <td>{item.resolver_name || "N/A"}</td>
-                  <td>{item.status || "N/A"}</td>
-                  <td>{item.computer_ip || "N/A"}</td>
-                  <td>{item.resolve_ip || "N/A"}</td>
-                  <td>{item.priority || "N/A"}</td>
-                  <td>
-                    <div className="">
-                      <button
-                        className="btn btn-warning me-1"
-                        onClick={() => {
-                          handleedit(item);
-                          setModal(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => {
-                          handledelete(item?.id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-        </Table>
-      </Container>
-    </div>
     </div>
   );
 };
 
-export default Add_Complaint;
+export default Show_Complaint;

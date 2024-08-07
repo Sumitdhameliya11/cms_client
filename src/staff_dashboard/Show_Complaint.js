@@ -9,10 +9,13 @@ import {
   Row,
   Col,
   Button,
-  Table ,
+  Table,
   Container,
   ModalHeader,
+  InputGroup,
+  InputGroupText,
 } from "reactstrap";
+import SearchIcon from "@mui/icons-material/Search";
 const handleedit = () => {};
 const handledelete = () => {};
 const Show_Complaint = () => {
@@ -43,7 +46,8 @@ const Show_Complaint = () => {
   const [date, setdate] = useState();
   const [sutno, setsutno] = useState();
   const [priority, setpriority] = useState();
-  const handlesubmit = ()=>{}
+  const [searchinput, setsearchinput] = useState("");
+  const handlesubmit = () => {};
   const labSubcategories = [
     "Lan Cabel",
     "Moniter",
@@ -55,6 +59,23 @@ const Show_Complaint = () => {
   ];
   return (
     <div className="mt-5">
+      <InputGroup className="mb-3 d-flex justify-content-start w-25 ms-3 pe-5">
+        <InputGroupText className="border-end-0 bg-white">
+          <SearchIcon />
+        </InputGroupText>
+        <Input
+          className="border-start-0 ms-0 ps-0 border text-center fw-semibold"
+          type="select"
+          placeholder="Search by Priority"
+          value={searchinput}
+          onChange={(e) => setsearchinput(e.target.value)}
+        >
+          <option value="">---select priority---</option>
+          <option value="High">HIGH</option>
+          <option value="Medium">MEDIUM</option>
+          <option value="Low">LOW</option>
+        </Input>
+      </InputGroup>
       <Container>
         <Table bordered>
           <thead>

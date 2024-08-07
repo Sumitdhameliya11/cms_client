@@ -9,12 +9,13 @@ import { Link } from "react-router-dom/dist";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonIcon from "@mui/icons-material/Person";
-import FeedbackIcon from '@mui/icons-material/Feedback';
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import logo from '../image/logo.jpeg';
+import logo from "../image/logo.jpeg";
+import Loader from "./Loader";
 const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   //   const token = localStorage.getItem("token");
   //   const navigate = useNavigate();
   //   const location = useLocation();
@@ -60,10 +61,10 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
       title: "Reset Password",
     },
     {
-        name: "feedback",
-        icon:FeedbackIcon,
-        title: "Feed Back",
-      },
+      name: "feedback",
+      icon: FeedbackIcon,
+      title: "Feed Back",
+    },
   ];
 
   const staffMenuItems = [
@@ -95,9 +96,9 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
       title: "Student Registration",
     },
     {
-      name: "Complaint",
+      name: "show-complaint",
       icon: CastForEducationRoundedIcon,
-      title: "Complaint",
+      title: "Show Complaint",
     },
     {
       name: "reset-password",
@@ -129,6 +130,7 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
   //   }, [location]);
   return (
     <>
+      <Loader showimg={loading} />
       <header className="px-1 d-md-none d-lg-none d-xl-none border-bottom">
         <div className="d-flex justify-content-between align-items-center">
           <img src={logo} alt="TechMe logo" height="60" className="my-2" />
@@ -148,10 +150,15 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
         style={{ outline: "none", zIndex: "-1", position: "fixed" }}
       >
         <Menu>
-          <Link to="/Dashboard" style={{ textDecoration: 'none' }}>
+          <Link to="/Dashboard" style={{ textDecoration: "none" }}>
             <MenuItem className="menu1 my-4 d-none d-md-block d-flex flex-column text-center text-decoration-none">
               <img src={logo} alt="TechMe-logo" height="60" />
-               <p className=" text-decoration-none fs-6 fw-bold text-primary" style={{ textDecoration: 'none' }}>Sutex Complaint System</p>
+              <p
+                className=" text-decoration-none fs-6 fw-bold text-primary"
+                style={{ textDecoration: "none" }}
+              >
+                Sutex Complaint System
+              </p>
             </MenuItem>
           </Link>
 
@@ -159,7 +166,9 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
             return (
               <MenuItem
                 key={idx}
-                icon={<val.icon style={{ color: "#0B60B1" }} />}
+                icon={
+                  <val.icon style={{ color: "#0B60B1" }} className="shadow" />
+                }
                 className={activeTab === val.name ? "active-menu" : ""}
                 onClick={() => {
                   setActiveTab(val.name);
@@ -171,7 +180,9 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
             );
           })}
           <MenuItem
-            icon={<LogoutIcon style={{ color: "#0B60B1" }} />}
+            icon={
+              <LogoutIcon style={{ color: "#0B60B1" }} className="shadow" />
+            }
             onClick={() => {
               logout();
             }}

@@ -96,7 +96,7 @@ const handledelete = () => {};
         centered
       >
         <ModalHeader toggle={() => setModal(!modal)}>
-          Cover Image Update
+          Add Complaint
         </ModalHeader>
         <ModalBody>
           <Container className="mt-3">

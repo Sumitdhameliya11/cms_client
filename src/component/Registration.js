@@ -10,12 +10,23 @@ import {
   Col,
 } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AxiosInstance from "../api/Axiosinstance";
 const Registration = () => {
   const [name,setname]=useState();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const [errorMessage, setErrorMessage] = useState("");
+  const [role,setrole]=useState("");
   const handlesubmit =(e)=>{
+    e.preventDefault();
+    AxiosInstance.post('/user/registration.php',{
+      name,
+      email,
+      password,
+      role
+    }).then((res)=>{
+      
+    })
   }
   return (
     <Container
@@ -72,6 +83,23 @@ const Registration = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
+                  required
+                />
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
+              </FormGroup>
+              <FormGroup>
+                <Label for="password" style={{ color: "black",fontWeight:"600"}}>
+                  Role :
+                </Label>
+                <Input
+                  type="select"
+                  name="role"
+                  id="role"
+                  placeholder="Role"
+                  value={role}
+                  onChange={(e) => setrole(e.target.value)}
                   required
                 />
                 {errorMessage && (

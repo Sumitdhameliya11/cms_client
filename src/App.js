@@ -7,6 +7,8 @@ import Footer from "./component/Footer";
 import Registration from "./component/Registration";
 import Login from "./component/Login";
 import Dashboard from "./component/Dashboard";
+import ForgotPassword from "./component/Forgot_Password";
+import ResetPassword from "./component/Reset_Password";
 const AppContent = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -18,6 +20,8 @@ const AppContent = () => {
         <Route path='/register' element={<Registration />} />
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/forget-password' element={<ForgotPassword />} />
+        <Route path='/reset-password/:id/:token' element={<ResetPassword />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
       {isHomePage && <Footer/>}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   Modal,
@@ -10,39 +10,27 @@ import {
   Row,
   Col,
   Button,
-  Table ,
+  Table,
   Container,
   ModalHeader,
 } from "reactstrap";
 import DataSaverOnRoundedIcon from "@mui/icons-material/DataSaverOnRounded";
+import AxiosInstance from "../api/Axiosinstance";
+import Cookies from "js-cookie";
+
 const Add_Complaint = () => {
+  const cookieemail = Cookies.get("email");
+  const user_id = Cookies.get('user_id');
   const [modal, setModal] = useState(false);
-  const [email, setemail] = useState("");
+  const [email, setemail] = useState(cookieemail);
+  const [mobilenumber,setmobilenumber]=useState();
   const [category, setcategory] = useState();
   const [subcategory, setsubcategory] = useState();
   const [description, setdescription] = useState();
   const [date, setdate] = useState();
   const [sutno, setsutno] = useState();
   const [priority, setpriority] = useState();
-  const [data, setdata] = useState([
-    {
-      id: 1,
-      userId: 101,
-      email: 'student1@example.com',
-      mobileNumber: '1234567890',
-      category: 'Lab',
-      subcategory: 'Lab 1',
-      problem: 'Equipment malfunction',
-      createDate: '2024-08-01',
-      resolveDate: null,
-      resolveName: null,
-      status: 'Open',
-      computerIp: '192.168.1.2',
-      resolveIp: null,
-      priority: 'High',
-    },
-    // ...other initial complaints
-  ]);
+  const [data, setdata] = useState([]);
   const labSubcategories = [
     "Lan Cabel",
     "Moniter",
@@ -53,12 +41,44 @@ const Add_Complaint = () => {
     "Application",
   ];
 
-  //   const [admindata, setadmindata] = useState([]);
-  //   const [loading, setloading] = useState(false);
-  const [searchinput, setsearchinput] = useState("");
-  const handlesubmit = (e) => {};
-  const handleedit = () => {};
-const handledelete = () => {};
+  //fetch data form the database when page is load
+  useEffect(()=>{
+    fetchdata();
+  },[])
+
+  const fetchdata = ()=>{
+    AxiosInstance.get(`/complaint/showstudentcomplanit.php?id=${user_id}`).then((res)=>{
+      setdata(res?.data?.data);
+    })
+  }
+  //add compalint data in batabase 
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    if(mobilenumber.length !== 10){
+      alert("enter valied mobile number");
+      return;
+    }
+    AxiosInstance.post(
+      "/complaint/addcomplanit.php",
+      {user_id:user_id,email:email,mobilenumber:mobilenumber,sutno:sutno,category:category,subcategory:subcategory,priority:priority,problem_description:description,date:date},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      console.log(res.data);
+      alert(res.data.message);
+      setmobilenumber('');
+      setsutno("");
+      setcategory("");
+      setsubcategory("")
+      setpriority("");
+      setdescription("");
+      setdate("");
+      setModal(false);
+    });
+  };
   return (
     <div className="add-complaint">
       <div className="container border-bottom mb-4">
@@ -95,30 +115,28 @@ const handledelete = () => {};
         toggle={() => setModal(!modal)}
         centered
       >
-        <ModalHeader toggle={() => setModal(!modal)}>
-          Add Complaint
-        </ModalHeader>
+        <ModalHeader toggle={() => setModal(!modal)}>Add Complaint</ModalHeader>
         <ModalBody>
           <Container className="mt-3">
             <Form onSubmit={handlesubmit}>
               <FormGroup row className="justify-content-center">
-                <Label for="email" sm={2} md={2} style={{ color: "#1974D2" }}>
-                  Email :
+                <Label for="mobileno" sm={2} md={2} style={{ color: "#1974D2" }}>
+                  Mobile Numbers :
                 </Label>
                 <Col sm={10} md={8}>
                   <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Enter Email"
+                    type="number"
+                    name="mobileno"
+                    id="mobileno"
+                    placeholder="Enter mobile no"
                     required
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
+                    value={mobilenumber}
+                    onChange={(e) => setmobilenumber(e.target.value)}
                   />
                 </Col>
               </FormGroup>
               <FormGroup row className="justify-content-center">
-                <Label for="email" sm={2} md={2} style={{ color: "#1974D2" }}>
+                <Label for="sutno" sm={2} md={2} style={{ color: "#1974D2" }}>
                   Sut No :
                 </Label>
                 <Col sm={10} md={8}>
@@ -267,73 +285,58 @@ const handledelete = () => {};
         </ModalBody>
       </Modal>
 
-      <div className="mt-5">
-      <Container>
-        <Table bordered>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>User_ID</th>
-              <th>Email</th>
-              <th>Mobile Number</th>
-              <th>Category</th>
-              <th>Subcategory</th>
-              <th>Problem</th>
-              <th>Create Date</th>
-              <th>Resolve Date</th>
-              <th>Resolve Name</th>
-              <th>Status</th>
-              <th>Computer Ip</th>
-              <th>Resolve Ip</th>
-              <th>Priority</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          {data &&
-            data.map((item, idx) => (
-              <tbody key={idx}>
-                <tr>
-                  <td>{item.id || "N/A"}</td>
-                  <td>{item.user_id || "N/A"}</td>
-                  <td>{item.email || "N/A"}</td>
-                  <td>{item.Mobile_number || "N/A"}</td>
-                  <td>{item.category || "N/A"}</td>
-                  <td>{item.subcategory || "N/A"}</td>
-                  <td>{item.problem || "N/A"}</td>
-                  <td>{item.create_date || "N/A"}</td>
-                  <td>{item.resolve_date || "N/A"}</td>
-                  <td>{item.resolver_name || "N/A"}</td>
-                  <td>{item.status || "N/A"}</td>
-                  <td>{item.computer_ip || "N/A"}</td>
-                  <td>{item.resolve_ip || "N/A"}</td>
-                  <td>{item.priority || "N/A"}</td>
-                  <td>
-                    <div className="">
-                      <button
-                        className="btn btn-warning me-1"
-                        onClick={() => {
-                          handleedit(item);
-                          setModal(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => {
-                          handledelete(item?.id);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-        </Table>
-      </Container>
-    </div>
+      <div
+        className="mt-5"
+        style={{
+          width: "100%",
+          overflowX: "scroll",
+        }}
+      >
+        <Container>
+          <Table bordered>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User_ID</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Problem</th>
+                <th>Create Date</th>
+                <th>Resolve Date</th>
+                <th>Resolve Name</th>
+                <th>Status</th>
+                <th>Computer Ip</th>
+                <th>Resolve Ip</th>
+                <th>Priority</th>
+                {/* <th>Action</th> */}
+              </tr>
+            </thead>
+            {data &&
+              data.map((item, idx) => (
+                <tbody key={idx}>
+                  <tr>
+                    <td>{item.id || "N/A"}</td>
+                    <td>{item.user_id || "N/A"}</td>
+                    <td>{item.email || "N/A"}</td>
+                    <td>{item.Mobile_number || "N/A"}</td>
+                    <td>{item.category || "N/A"}</td>
+                    <td>{item.subcategory || "N/A"}</td>
+                    <td>{item.problem || "N/A"}</td>
+                    <td>{item.create_date || "N/A"}</td>
+                    <td>{item.resolve_date || "N/A"}</td>
+                    <td>{item.resolver_name || "N/A"}</td>
+                    <td>{item.status || "N/A"}</td>
+                    <td>{item.computer_ip || "N/A"}</td>
+                    <td>{item.resolve_ip || "N/A"}</td>
+                    <td>{item.priority || "N/A"}</td>
+                  </tr>
+                </tbody>
+              ))}
+          </Table>
+        </Container>
+      </div>
     </div>
   );
 };

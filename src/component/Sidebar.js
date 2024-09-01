@@ -5,7 +5,7 @@ import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CastForEducationRoundedIcon from "@mui/icons-material/CastForEducationRounded";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Link } from "react-router-dom/dist";
+import { Link, useLocation, useNavigate } from "react-router-dom/dist";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonIcon from "@mui/icons-material/Person";
@@ -13,12 +13,14 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import logo from "../image/logo.jpeg";
 import Loader from "./Loader";
+import AxiosInstance from "../api/Axiosinstance";
+import Cookies from "js-cookie";
 const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   //   const token = localStorage.getItem("token");
-  //   const navigate = useNavigate();
-  //   const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -33,21 +35,25 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
   };
   //   //logout api calling
   const logout = async () => {
-    //     const userconfirm = window.confirm("Are you sure you want to log out?");
-    //     if (!userconfirm) {
-    //       return;
-    //     }
-    //     if (!token) {
-    //       Showerror("token not found");
-    //     }
-    //     AxiosInstance.get(`api/user/logout`)
-    //       .then((res) => {
-    //         Showsucess(res.data.message);
-    //         navigate("/Login");
-    //       })
-    //       .catch((error) => {
-    //         Showerror(error?.response?.data?.message);
-    //       });
+    const userconfirm = window.confirm("Are you sure you want to log out?");
+    if (!userconfirm) {
+      return;
+    }
+
+    try {
+      const res = await AxiosInstance.delete("/User/logout.php");
+      if (res.data.status === "success") {
+        Cookies.remove('user_id');
+        Cookies.remove('email');
+        Cookies.remove('role');
+        navigate("/Login");
+      } else {
+        alert("Logout failed: " + res.data.message);
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("Failed to log out. Please try again.");
+    }
   };
   const studentMenuItems = [
     {
@@ -119,15 +125,15 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
       break;
     default:
   }
-  //   useEffect(() => {
-  //     // Show loader on location change
-  //     setLoading(true);
-  //     const timeout = setTimeout(() => {
-  //       setLoading(false);
-  //     }, 500); // Adjust the timeout duration as needed
+  useEffect(() => {
+    // Show loader on location change
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500); // Adjust the timeout duration as needed
 
-  //     return () => clearTimeout(timeout); // Cleanup timeout on unmount or location change
-  //   }, [location]);
+    return () => clearTimeout(timeout); // Cleanup timeout on unmount or location change
+  }, [location]);
   return (
     <>
       <Loader showimg={loading} />
@@ -169,7 +175,7 @@ const DashSidebar = ({ activeTab, setActiveTab, userType }) => {
                 icon={
                   <val.icon style={{ color: "#0B60B1" }} className="shadow" />
                 }
-                className={activeTab === val.name ? "active-menu" : ""}
+                className={activeTab === val.name ? "active-menu active" : ""}
                 onClick={() => {
                   setActiveTab(val.name);
                   handleMenuClick();

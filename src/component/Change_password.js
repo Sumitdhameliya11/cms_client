@@ -10,77 +10,41 @@ import {
   Input,
   Button,
 } from "reactstrap";
+import AxiosInstance from "../api/Axiosinstance";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const Change_password = () => {
     const [newpassword, setnewpassword] = useState();
   const [oldpassword, setoldpassword] = useState();
   const [cpassword, setcpassword] = useState();
-//   const [loading,setloading]=useState(false);
-  // const [modal, setmodal] = useState(false);
-  //custom sucessfully message handle
-//   const Showsucess = (msg) => {
-//     toast.success(msg, {
-//       position: "top-right",
-//       className: "toast-responsive mx-3",
-//     });
-//   };
-//custom error message
-//   const Showerror = (msg) => {
-//     toast.error(msg, {
-//       position: "top-right",
-//       className: "toast-responsive mx-3",
-//     });
-//   };
-  //handle submit
-  const handlesubmit = (e) => {
-    e.preventDefault();
-  };
+  const navigate = useNavigate();
   const update_password = async () => {
-    // setloading(true);
-    // const user = JSON.parse(localStorage.getItem("userdata"));
-    // const token = localStorage.getItem("token");
-    // if (!token) {
-    //   Showerror("token not found");
-    //   return;
-    // }
-
-    // if (cpassword !== newpassword) {
-    //   Showerror("password does not match");
-    //   return;
-    // }
-
-    // AxiosInstance
-    //   .put(
-    //     `api/user/change_password/${user?.user_id}`,
-    //     {
-    //       oldpassword: oldpassword,
-    //       newpassword: newpassword,
-    //       cpassword: cpassword,
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   )
-    //   .then((response) => {
-    //     setoldpassword("");
-    //     setnewpassword("");
-    //     setcpassword("");
-    //     setTimeout(() => {
-    //       setloading(false);
-    //       Showsucess(response?.data?.message);
-    //     }, 300);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     Showerror(error?.response?.data?.message);
-    //     setloading(false);
-    //   });
+    const user_id = Cookies.get('user_id');
+    if(newpassword !== cpassword){
+      alert("password not match");
+      return;
+    }
+    AxiosInstance.put('/User/changepassword.php',{ id:user_id,oldpassword:oldpassword,newpassword:newpassword},{
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res)=>{
+      console.log(res);
+      // alert(res?.data?.message);
+      setoldpassword('');
+      setnewpassword('');
+      setcpassword('');
+      Cookies.remove('user_id');
+      Cookies.remove('email');
+      Cookies.remove('role');
+      navigate('/login');
+      
+    })
   };
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{height:"80vh" }}>
     {/* <Loader showimg={loading}/> */}
-      <Form onSubmit={handlesubmit} className="w-75 shadow p-3 rounded-3">
+      <Form  className="w-75 shadow p-3 rounded-3">
         <Row>
           <Col lg={12}>
             <FormGroup className="mb-4">

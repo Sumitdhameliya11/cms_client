@@ -19,20 +19,93 @@ import {
 import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
 import DataSaverOnRoundedIcon from "@mui/icons-material/DataSaverOnRounded";
 import SearchIcon from "@mui/icons-material/Search";
-
+import AxiosInstance from "../api/Axiosinstance";
 const Staff_registration = () => {
   const [modal, setModal] = useState(false);
   const [email, setemail] = useState("");
+  const [name, setname] = useState("");
   const [password, setpassword] = useState("");
   const [cpassword, setcpassword] = useState("");
-  const [admindata, setadmindata] = useState([]);
+  const [staffdata, setstaffdata] = useState([]);
   const [editmode, seteditmode] = useState(false);
-  // const [editid, seteditid] = useState("");
-  // const [loading, setloading] = useState(false);
+  const [errorMessage, seterrorMessage] = useState("");
+  const [editid, seteditid] = useState("");
+  const [role,setrole]=useState("");
   const [searchinput, setsearchinput] = useState("");
-  const handleedit = () => {};
-  const handledelete = () => {};
-  const handlesubmit = () => {};  
+  useEffect(()=>{
+    fetchdata();
+  },[])
+  const fetchdata = ()=>{
+    AxiosInstance.get('/admin_dashboard/getStaff.php').then((res)=>{
+      setstaffdata(res?.data?.admin_data);
+    })
+  }
+  const handleedit = (item) => {
+    setModal(true);
+    seteditmode(true);
+    seteditid(item?.id);
+    setname(item?.name);
+    setemail(item?.email);
+    setpassword(item?.password);
+    setrole(item?.role);
+  };
+  const handledelete = (id) => {
+    AxiosInstance.delete(`/admin_dashboard/deletestaff.php?id=${id}`).then((res)=>{
+      alert(res?.data?.message);
+      fetchdata();
+    })
+  };
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    if (!email) {
+      seterrorMessage("Please enter email");
+      return ;
+    }
+    if (!password) {
+      seterrorMessage("Please enter password");
+      return ;
+    }
+
+    if (password !== cpassword) {
+      seterrorMessage("password does not match");
+      return ;
+    }
+    {editmode ?
+    AxiosInstance.put(
+      "/admin_dashboard/updatestaff.php",
+      {id:editid,name: name, email: email, password: password, role: role },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      alert(res.data.message);
+      setname("");
+      setemail("");
+      setpassword("");
+      setcpassword("");
+      setModal(false);
+      fetchdata();
+    }) :
+    AxiosInstance.post(
+      "/User/registration.php",
+      { name: name, email: email, password: password, role:role },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      alert(res.data.message);
+      setname("");
+      setemail("");
+      setpassword("");
+      setcpassword("");
+      setModal(false);
+      fetchdata();
+    }); }
+  };
   return (
     <div className="Add_student">
       <div className="d-flex justify-content-between me-4 mt-5 w-100 bg-white">
@@ -73,8 +146,8 @@ const Staff_registration = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            {admindata &&
-              admindata.map((item, idx) => (
+            {staffdata &&
+              staffdata.map((item, idx) => (
                 <tbody key={idx}>
                   <tr>
                     <td>{item?.id ? item?.id : " "}</td>
@@ -107,18 +180,37 @@ const Staff_registration = () => {
         </Container>
       </div>
 
-      {/* ===================================== Modals ===================================== */}
-      <Modal
+            {/* ===================================== Modals ===================================== */}
+            <Modal
         className="modal"
         size="lg"
         isOpen={modal}
         toggle={() => setModal(!modal)}
         centered
       >
-        <ModalHeader toggle={() => setModal(!modal)}>Add Staff</ModalHeader>
+        <ModalHeader toggle={() => setModal(!modal)}>Add Student</ModalHeader>
         <ModalBody>
           <Container className="mt-5">
             <Form onSubmit={handlesubmit}>
+            <FormGroup row className="justify-content-center">
+                <Label for="email" sm={2} md={2} style={{ color: "#1974D2" }}>
+                  Name :
+                </Label>
+                <Col sm={10} md={8}>
+                  <Input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Enter Name"
+                    required
+                    value={name}
+                    onChange={(e) => setname(e.target.value)}
+                  />
+                </Col>
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
+              </FormGroup>
               <FormGroup row className="justify-content-center">
                 <Label for="email" sm={2} md={2} style={{ color: "#1974D2" }}>
                   Email :
@@ -134,6 +226,9 @@ const Staff_registration = () => {
                     onChange={(e) => setemail(e.target.value)}
                   />
                 </Col>
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
               </FormGroup>
               <FormGroup row className="justify-content-center">
                 <Label for="name" sm={2} md={2} style={{ color: "#1974D2" }}>
@@ -150,6 +245,9 @@ const Staff_registration = () => {
                     onChange={(e) => setpassword(e.target.value)}
                   />
                 </Col>
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
               </FormGroup>
               <FormGroup row className="justify-content-center">
                 <Label for="name" sm={2} md={2} style={{ color: "#1974D2" }}>
@@ -165,6 +263,36 @@ const Staff_registration = () => {
                     value={cpassword}
                     onChange={(e) => setcpassword(e.target.value)}
                   />
+                </Col>
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
+              </FormGroup>
+              <FormGroup row className="justify-content-center">
+                <Label
+                  for="role"
+                  sm={2}
+                  md={2}
+                  style={{ color: "#1974D2" }}
+                >
+                  role :
+                </Label>
+                <Col sm={10} md={8}>
+                  <Input
+                    type="select"
+                    name="role"
+                    id="role"
+                    required
+                    value={role}
+                    onChange={(e) => {
+                      setrole(e.target.value);
+                    }}
+                  >
+                    <option value="">Select a status</option>
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                    <option value="student">Student</option>
+                  </Input>
                 </Col>
               </FormGroup>
               <FormGroup>

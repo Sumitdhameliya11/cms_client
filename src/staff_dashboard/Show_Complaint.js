@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalBody,
@@ -16,47 +16,52 @@ import {
   InputGroupText,
 } from "reactstrap";
 import SearchIcon from "@mui/icons-material/Search";
-const handleedit = () => {};
-const handledelete = () => {};
+import AxiosInstance from "../api/Axiosinstance";
+import Cookies from "js-cookie";
 const Show_Complaint = () => {
-  const [data, setdata] = useState([
-    {
-      id: 1,
-      userId: 101,
-      email: "student1@example.com",
-      mobileNumber: "1234567890",
-      category: "Lab",
-      subcategory: "Lab 1",
-      problem: "Equipment malfunction",
-      createDate: "2024-08-01",
-      resolveDate: null,
-      resolveName: null,
-      status: "Open",
-      computerIp: "192.168.1.2",
-      resolveIp: null,
-      priority: "High",
-    },
-    // ...other initial complaints
-  ]);
+  const [data, setdata] = useState([]);
   const [modal, setModal] = useState(false);
-  const [email, setemail] = useState("");
-  const [category, setcategory] = useState();
-  const [subcategory, setsubcategory] = useState();
-  const [description, setdescription] = useState();
-  const [date, setdate] = useState();
-  const [sutno, setsutno] = useState();
-  const [priority, setpriority] = useState();
+  const [status,setstatus]=useState("");
+  const [editid,seteditid]=useState(""); 
   const [searchinput, setsearchinput] = useState("");
-  const handlesubmit = () => {};
-  const labSubcategories = [
-    "Lan Cabel",
-    "Moniter",
-    "Keyboard",
-    "Mouse",
-    "CPU",
-    "Network",
-    "Application",
-  ];
+
+  useEffect(() => {
+    fetchdata();
+  }, []);
+  const fetchdata = () => {
+    AxiosInstance.get(`/complaint/showcomplaint.php`).then((res) => {
+      setdata(res?.data?.data);
+    });
+  };
+  //handle the formdata 
+  const  handlesubmit = (e)=>{
+    e.preventDefault();
+    const user_id = Cookies.get("user_id");
+    const role = Cookies.get("role");
+    if(!status){
+      alert("please fill the status");
+      return; 
+    }
+    AxiosInstance.put(
+      "/complaint/editcomplaint.php",
+      {user_id:user_id,id:editid,status:status,role:role},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res)=>{
+      alert(res?.data?.message);
+      setstatus("");
+      fetchdata();
+      setModal(false);
+    })
+  } 
+  const handleedit = (item) => {
+    seteditid(item?.id);
+    setModal(true);
+    setstatus(item?.status);
+  };
   return (
     <div className="mt-5">
       <InputGroup className="mb-3 d-flex justify-content-start w-25 ms-3 pe-5">
@@ -121,18 +126,9 @@ const Show_Complaint = () => {
                         className="btn btn-warning me-1"
                         onClick={() => {
                           handleedit(item);
-                          setModal(true);
                         }}
                       >
                         Edit
-                      </button>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => {
-                          handledelete(item?.id);
-                        }}
-                      >
-                        Delete
                       </button>
                     </div>
                   </td>
@@ -155,39 +151,7 @@ const Show_Complaint = () => {
         </ModalHeader>
         <ModalBody>
           <Container className="mt-3">
-            <Form onSubmit={handlesubmit}>
-              <FormGroup row className="justify-content-center">
-                <Label for="email" sm={2} md={2} style={{ color: "#1974D2" }}>
-                  Email :
-                </Label>
-                <Col sm={10} md={8}>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Enter Email"
-                    required
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup row className="justify-content-center">
-                <Label for="email" sm={2} md={2} style={{ color: "#1974D2" }}>
-                  Sut No :
-                </Label>
-                <Col sm={10} md={8}>
-                  <Input
-                    type="text"
-                    name="sutno"
-                    id="sutno"
-                    placeholder="Enter SUTNO"
-                    required
-                    value={sutno}
-                    onChange={(e) => setsutno(e.target.value)}
-                  />
-                </Col>
-              </FormGroup>
+            <Form onSubmit={(e)=>handlesubmit(e)}>
               <FormGroup row className="justify-content-center">
                 <Label
                   for="category"
@@ -195,7 +159,7 @@ const Show_Complaint = () => {
                   md={2}
                   style={{ color: "#1974D2" }}
                 >
-                  Category :
+                  status :
                 </Label>
                 <Col sm={10} md={8}>
                   <Input
@@ -203,116 +167,22 @@ const Show_Complaint = () => {
                     name="category"
                     id="category"
                     required
-                    value={category}
+                    value={status}
                     onChange={(e) => {
-                      setcategory(e.target.value);
-                      setsubcategory(""); // Reset subcategory when category changes
+                      setstatus(e.target.value);
                     }}
                   >
-                    <option value="">Select a category</option>
-                    <option value="LAB1">Lab1</option>
-                    <option value="LAB2">LAb2</option>
-                    <option value="LAB3">LAb3</option>
+                    <option value="">Select a status</option>
+                    <option value="pending">pending</option>
+                    <option value="complete">Complete</option>
                   </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row className="justify-content-center">
-                <Label
-                  for="subcategory"
-                  sm={2}
-                  md={2}
-                  style={{ color: "#1974D2" }}
-                >
-                  Lab Subcategory :
-                </Label>
-                <Col sm={10} md={8}>
-                  <Input
-                    type="select"
-                    name="subcategory"
-                    id="subcategory"
-                    required
-                    value={subcategory}
-                    onChange={(e) => setsubcategory(e.target.value)}
-                  >
-                    <option value="">Select a subcategory</option>
-                    {labSubcategories.map((labSub, index) => (
-                      <option key={index} value={labSub}>
-                        {labSub}
-                      </option>
-                    ))}
-                  </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row className="justify-content-center">
-                <Label
-                  for="category"
-                  sm={2}
-                  md={2}
-                  style={{ color: "#1974D2" }}
-                >
-                  Priority :
-                </Label>
-                <Col sm={10} md={8}>
-                  <Input
-                    type="select"
-                    name="category"
-                    id="category"
-                    required
-                    value={priority}
-                    onChange={(e) => {
-                      setpriority(e.target.value);
-                    }}
-                  >
-                    <option value="">Select a priority</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                  </Input>
-                </Col>
-              </FormGroup>
-
-              <FormGroup row className="justify-content-center">
-                <Label
-                  for="description"
-                  sm={2}
-                  md={2}
-                  style={{ color: "#1974D2" }}
-                >
-                  Problem Description:
-                </Label>
-                <Col sm={10} md={8}>
-                  <Input
-                    type="textarea"
-                    name="description"
-                    id="description"
-                    placeholder="Enter your problem description"
-                    required
-                    value={description}
-                    onChange={(e) => setdescription(e.target.value)}
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup row className="justify-content-center">
-                <Label for="date" sm={2} md={2} style={{ color: "#1974D2" }}>
-                  Date:
-                </Label>
-                <Col sm={10} md={8}>
-                  <Input
-                    type="date"
-                    name="date"
-                    id="date"
-                    placeholder="Select date"
-                    required
-                    value={date}
-                    onChange={(e) => setdate(e.target.value)}
-                  />
                 </Col>
               </FormGroup>
               <FormGroup>
                 <Row className="justify-content-center">
                   <Col sm={10} className="text-center">
                     <Button color="primary" type="submit" sm={10} md={12}>
-                      Submit
+                      Edit
                     </Button>
                   </Col>
                 </Row>

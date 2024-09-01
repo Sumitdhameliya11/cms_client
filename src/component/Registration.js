@@ -11,21 +11,25 @@ import {
 } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AxiosInstance from "../api/Axiosinstance";
+import { useNavigate } from "react-router";
 const Registration = () => {
   const [name,setname]=useState();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const [errorMessage, setErrorMessage] = useState("");
-  const [role,setrole]=useState("");
+  const [role,setrole]=useState("staff");
+  const [response,setresponse]=useState();
+  const navigate = useNavigate();
   const handlesubmit =(e)=>{
     e.preventDefault();
-    AxiosInstance.post('/user/registration.php',{
+    AxiosInstance.post('/User/registration.php',{
       name,
       email,
       password,
       role
     }).then((res)=>{
-      
+      setresponse(res.data.message);
+      navigate("/login");
     })
   }
   return (
@@ -43,6 +47,7 @@ const Registration = () => {
               </h2>
               <p className="fw-bold">Welcome Please Sign up For Add Complaint.</p>
             </div>
+            {response && <div className="text-center fs-4" style={{ color: "red" }}>{response}</div>}
             <Form method="post" onSubmit={handlesubmit}>
             <FormGroup>
                 <Label for="email" style={{ color: "black",fontWeight:"600"}} >
@@ -83,23 +88,6 @@ const Registration = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
-                  required
-                />
-                {errorMessage && (
-                  <div style={{ color: "red" }}>{errorMessage}</div>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label for="password" style={{ color: "black",fontWeight:"600"}}>
-                  Role :
-                </Label>
-                <Input
-                  type="select"
-                  name="role"
-                  id="role"
-                  placeholder="Role"
-                  value={role}
-                  onChange={(e) => setrole(e.target.value)}
                   required
                 />
                 {errorMessage && (

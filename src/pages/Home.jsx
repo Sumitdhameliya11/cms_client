@@ -18,6 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 // Import required modules
 import { EffectCreative, Autoplay } from "swiper/modules";
+import About from "../component/About";
 const Home = () => {
   const backgroundImages = [`url(${i1})`, `url(${i2})`];
 
@@ -132,7 +133,11 @@ const Home = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-        {/* ===============================testimonial ============================ */}
+
+      {/* ===============================Created By============================ */}
+        <About/>
+
+      {/* ===============================testimonial ============================ */}
       <Container className="my-5 px-2 w-100 shadow p-4 rounded-3">
       <h2 className="text-center text-primary fw-bold mb-4">What Students Say</h2>
       <div className="marquee-container">

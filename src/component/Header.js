@@ -42,11 +42,11 @@ const Header = () => {
         </NavbarBrand>
         <NavbarToggler onClick={toggle} style={{ zIndex: "111111" }} aria-label="Toggle navigation" />
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <Nav className="navv ml-auto align-items-center" navbar>
+          <Nav className="nav ml-auto align-items-center" navbar>
             <NavItem className={`item ${isActive('/') ? 'active' : ''}`}>
               <NavLink href={`${Baseurl.dynamic}`} onClick={() => { handleCollapse(); }}>
-                <span className="wpbtn btn bg-none border-0">
-                  <b className="d-block">Home</b>
+                <span className="btn btn-primary d-flex align-items-center py-2 fw-light">
+                  <b className="mb-0 text-center">Home</b>
                 </span>
               </NavLink>
             </NavItem>
